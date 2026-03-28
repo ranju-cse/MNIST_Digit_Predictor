@@ -1,0 +1,5 @@
+numpy
+tensorflow
+fastAPI
+Pydantic
+Streamlit
