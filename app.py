@@ -2,11 +2,14 @@ from fastapi import FastAPI
 import tensorflow as tf
 import numpy as np
 from pydantic import BaseModel
-app=FastAPI()
 
+#FastAPI() → creates a web application instance
+#app → this is the main object that handles our API
+app=FastAPI()
+#loads the saved model
 model=tf.keras.models.load_model('mnist.h5')
 
-
+#Defines what input your API expects 
 class InputData(BaseModel):
     data:list
     
@@ -18,14 +21,16 @@ def home():
 
 @app.post('/predict')
 def predict(inputData:InputData):
+    
+    #Extract data
     img=np.array(inputData.data)
-#Normalize
+    #Normalize
     img=img/255.0
- #Reshape
+    #Reshape
     img=img.reshape(1,28,28)
     
  
     prediction=model.predict(img)
     digit=digit = int(np.argmax(prediction))
-    return {"Digit:",digit}
+    return {"Digit":digit}
 
